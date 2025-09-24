@@ -393,7 +393,15 @@ The project uses GitHub Actions for:
 - ✅ **Coverage**: SimpleCov with Codecov reporting
 - ✅ **Releases**: Automated gem publishing
 
-See [CI_SETUP.md](CI_SETUP.md) for detailed CI/CD documentation.
+See [CI_SETUP.md](docs/CI_SETUP.md) for detailed CI/CD documentation.
+
+## 📚 Documentation
+
+- [Resource DSL Migration Guide](docs/DSL_MIGRATION_GUIDE.md) - How to upgrade to the new readable DSL
+- [CI/CD Setup](docs/CI_SETUP.md) - Complete CI/CD pipeline documentation
+- [Resource DSL Analysis](docs/RESOURCE_DSL_ANALYSIS.md) - Detailed analysis of the DSL improvements
+- [CI Implementation Summary](docs/CI_IMPLEMENTATION_SUMMARY.md) - Overview of CI/CD implementation
+- [Renaming Summary](docs/RENAMING_SUMMARY.md) - Details about the FlexAdmin to Rama migration
 
 ## License
 
@@ -401,7 +409,6 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## Support
 
-- Documentation: [https://flexadmin.dev/docs](https://flexadmin.dev/docs)
-- Issues: [GitHub Issues](https://github.com/flexadmin/rama/issues)
-- Discussions: [GitHub Discussions](https://github.com/flexadmin/rama/discussions)
-- Email: support@flexadmin.dev
+- Documentation: [docs/](docs/)
+- Issues: [GitHub Issues](https://github.com/itisbryan/rama/issues)
+- Discussions: [GitHub Discussions](https://github.com/itisbryan/rama/discussions)
