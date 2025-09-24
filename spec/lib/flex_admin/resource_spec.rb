@@ -4,7 +4,7 @@ require 'spec_helper'
 
 RSpec.describe Rama::Resource do
   let(:user_class) { User }
-  
+
   describe 'DSL configuration' do
     it 'allows defining fields with types and options' do
       resource_class = Class.new(described_class) do
@@ -114,29 +114,29 @@ RSpec.describe Rama::Resource do
 
     it 'applies includes to prevent N+1 queries' do
       create_list(:user, 3, :with_orders, :with_profile)
-      
-      expect do
+
+      expect {
         scope = resource_class.build_scope({})
         scope.each do |user|
           user.orders.count
           user.profile&.bio
         end
-      end.to make_database_queries(count: be <= 5) # Should be much fewer than N+1
+      }.to make_database_queries(count: be <= 5) # Should be much fewer than N+1
     end
 
     it 'caches association counts' do
       users = create_list(:user, 3, :with_orders)
-      
+
       with_caching_enabled do
         # First call should hit database
-        expect do
+        expect {
           users.each { |user| resource_class.cached_association_count(user, :orders) }
-        end.to make_database_queries(count: be > 0)
-        
+        }.to make_database_queries(count: be > 0)
+
         # Second call should use cache
-        expect do
+        expect {
           users.each { |user| resource_class.cached_association_count(user, :orders) }
-        end.to make_database_queries(count: 0)
+        }.to make_database_queries(count: 0)
       end
     end
   end
@@ -169,11 +169,11 @@ RSpec.describe Rama::Resource do
   describe 'authorization integration' do
     let(:admin_user) { create(:admin_user) }
     let(:regular_user) { create(:user) }
-    
+
     let(:resource_class) do
       Class.new(described_class) do
         model User
-        
+
         authorize do
           can :read, User
           can :create, User, if: -> { current_user.admin? }

@@ -11,15 +11,15 @@ group :development, :test do
   gem 'pg', '~> 1.5'
   gem 'mysql2', '~> 0.5'
   gem 'sqlite3', '~> 1.6'
-  
+
   # Rails for testing
   gem 'rails', '~> 8.0.0'
-  
+
   # Additional development tools
   gem 'pry', '~> 0.14'
   gem 'pry-rails', '~> 0.3'
   gem 'listen', '~> 3.8'
-  
+
   # Documentation
   gem 'yard', '~> 0.9'
   gem 'redcarpet', '~> 3.6' # For YARD markdown support

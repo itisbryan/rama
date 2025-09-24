@@ -4,7 +4,7 @@ require 'spec_helper'
 
 RSpec.describe Rama::SearchEngine do
   let(:model_class) { User }
-  
+
   before do
     # Create test data
     create(:user, name: 'John Doe', email: 'john.doe@example.com')
@@ -114,21 +114,21 @@ RSpec.describe Rama::SearchEngine do
 
     it 'performs search within acceptable time limits' do
       search_engine = described_class.new(model_class, 'Test Record', strategy: :basic)
-      
-      performance = measure_performance do
+
+      performance = measure_performance {
         search_engine.search.limit(50).to_a
-      end
-      
+      }
+
       expect(performance[:duration]).to be < 1.second
     end
 
     it 'handles large result sets efficiently' do
       search_engine = described_class.new(model_class, 'Test', strategy: :basic)
-      
-      performance = measure_performance do
+
+      performance = measure_performance {
         search_engine.search.limit(100).to_a
-      end
-      
+      }
+
       expect(performance[:memory_used]).to be < 50.megabytes
     end
   end
@@ -141,7 +141,7 @@ RSpec.describe Rama::SearchEngine do
 
     it 'detects available search capabilities' do
       search_engine = described_class.new(model_class, 'John', strategy: :auto)
-      
+
       # Should not raise errors when checking capabilities
       expect { search_engine.send(:full_text_available?) }.not_to raise_error
       expect { search_engine.send(:trigram_available?) }.not_to raise_error
@@ -156,12 +156,12 @@ RSpec.describe Rama::SearchEngine do
 
     it 'searches across associations when enabled' do
       search_engine = described_class.new(
-        model_class, 
-        'Tech Corp', 
+        model_class,
+        'Tech Corp',
         strategy: :basic,
-        include_associations: true
+        include_associations: true,
       )
-      
+
       # This would require proper join setup in the search engine
       # For now, just ensure it doesn't error
       expect { search_engine.search.to_a }.not_to raise_error
@@ -172,8 +172,8 @@ RSpec.describe Rama::SearchEngine do
 
   def postgresql_with_trigram?
     ActiveRecord::Base.connection.adapter_name.downcase.include?('postgresql') &&
-    ActiveRecord::Base.connection.execute("SELECT 1 FROM pg_extension WHERE extname = 'pg_trgm'").any?
-  rescue
+      ActiveRecord::Base.connection.execute("SELECT 1 FROM pg_extension WHERE extname = 'pg_trgm'").any?
+  rescue StandardError
     false
   end
 end

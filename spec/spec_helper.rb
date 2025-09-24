@@ -12,7 +12,7 @@ if ENV['COVERAGE']
 
   SimpleCov.formatters = [
     SimpleCov::Formatter::HTMLFormatter,
-    SimpleCov::Formatter::LcovFormatter
+    SimpleCov::Formatter::LcovFormatter,
   ]
 
   SimpleCov.start 'rails' do
@@ -38,13 +38,13 @@ require 'selenium-webdriver'
 require 'database_cleaner/active_record'
 
 # Configure Capybara
-Capybara.register_driver :headless_chrome do |app|
+Capybara.register_driver :headless_chrome do |_app|
   options = Selenium::WebDriver::Chrome::Options.new
   options.add_argument('--headless')
   options.add_argument('--no-sandbox')
   options.add_argument('--disable-dev-shm-usage')
   options.add_argument('--window-size=1400,1400')
-  
+
   Selenium::WebDriver.for(:chrome, options: options)
 end
 
@@ -65,14 +65,14 @@ RSpec.configure do |config|
   config.include Rama::TestHelpers
   config.include Capybara::DSL, type: :feature
   config.include Capybara::RSpecMatchers, type: :feature
-  
+
   # Database cleaner
   config.before(:suite) do
     DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.clean_with(:truncation)
   end
 
-  config.around(:each) do |example|
+  config.around do |example|
     DatabaseCleaner.cleaning do
       example.run
     end
@@ -80,13 +80,13 @@ RSpec.configure do |config|
 
   # Use transactional fixtures for non-JS tests
   config.use_transactional_fixtures = true
-  
+
   # For JS tests, use database cleaner
-  config.before(:each, js: true) do
+  config.before(:each, :js) do
     DatabaseCleaner.strategy = :truncation
   end
 
-  config.after(:each, js: true) do
+  config.after(:each, :js) do
     DatabaseCleaner.strategy = :transaction
   end
 
@@ -101,13 +101,11 @@ RSpec.configure do |config|
 
   config.shared_context_metadata_behavior = :apply_to_host_groups
   config.filter_run_when_matching :focus
-  config.example_status_persistence_file_path = "spec/examples.txt"
+  config.example_status_persistence_file_path = 'spec/examples.txt'
   config.disable_monkey_patching!
   config.warnings = true
 
-  if config.files_to_run.one?
-    config.default_formatter = "doc"
-  end
+  config.default_formatter = 'doc' if config.files_to_run.one?
 
   config.profile_examples = 10
   config.order = :random

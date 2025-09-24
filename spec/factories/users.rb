@@ -50,8 +50,8 @@ FactoryBot.define do
 
   factory :profile do
     association :user
-    bio { "This is a test bio" }
-    website { "https://example.com" }
+    bio { 'This is a test bio' }
+    website { 'https://example.com' }
     created_at { Time.current }
     updated_at { Time.current }
   end
