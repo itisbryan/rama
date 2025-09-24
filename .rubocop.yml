@@ -1,6 +1,6 @@
 # RuboCop configuration for Rama
 
-require:
+plugins:
   - rubocop-rails
   - rubocop-rspec
   - rubocop-performance
@@ -27,6 +27,8 @@ Layout/LineLength:
   Exclude:
     - 'spec/**/*'
     - 'examples/**/*'
+    - '*.md'
+    - 'docs/**/*'
 
 Layout/MultilineMethodCallIndentation:
   EnforcedStyle: indented
@@ -117,7 +119,7 @@ Metrics/PerceivedComplexity:
   Max: 8
 
 # Naming
-Naming/PredicateName:
+Naming/PredicatePrefix:
   ForbiddenPrefixes:
     - is_
 
@@ -160,10 +162,10 @@ RSpec/DescribeClass:
     - 'spec/features/**/*'
     - 'spec/performance/**/*'
 
-RSpec/FilePath:
+RSpec/SpecFilePathFormat:
   Enabled: false
 
-RSpec/SpecFilePathFormat:
+RSpec/SpecFilePathSuffix:
   Enabled: false
 
 RSpec/MultipleMemoizedHelpers:
@@ -223,12 +225,3 @@ Style/MethodCallWithArgsParentheses:
 
 Style/BlockComments:
   Enabled: false
-
-# Allow longer lines in examples and documentation
-Layout/LineLength:
-  Exclude:
-    - 'examples/**/*'
-    - '*.md'
-    - 'RESOURCE_DSL_ANALYSIS.md'
-    - 'DSL_MIGRATION_GUIDE.md'
-    - 'TESTING.md'
