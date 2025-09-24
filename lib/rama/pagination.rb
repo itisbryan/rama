@@ -103,7 +103,7 @@ class Rama::Pagination
     def initialize(scope, page: 1, per_page: 25)
       @scope = scope
       @page = [page.to_i, 1].max
-      @per_page = [[per_page.to_i, 1].max, 100].min
+      @per_page = per_page.to_i.clamp(1, 100)
     end
 
     def paginate

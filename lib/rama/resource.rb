@@ -124,7 +124,8 @@ class Rama::Resource
       end
 
       # Add filters for date fields
-      model.columns.select { |c| [:date, :datetime].include?(c.type) }.each do |column|
+      date_types = [:date, :datetime].freeze
+      model.columns.select { |c| date_types.include?(c.type) }.each do |column|
         filters[column.name] = { type: :date_range }
       end
 

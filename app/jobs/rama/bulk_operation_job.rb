@@ -207,8 +207,9 @@ class Rama::BulkOperationJob < ApplicationJob
 
   def default_export_columns
     # Get the first few columns, excluding timestamps and internal fields
+    excluded_columns = ['created_at', 'updated_at', 'encrypted_password', 'reset_password_token'].freeze
     @resource_class.column_names.reject { |name|
-      ['created_at', 'updated_at', 'encrypted_password', 'reset_password_token'].include?(name)
+      excluded_columns.include?(name)
     }.first(10)
   end
 

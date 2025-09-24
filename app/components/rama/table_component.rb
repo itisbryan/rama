@@ -98,7 +98,7 @@ class Rama::TableComponent < ApplicationComponent
   def empty_state
     content_tag :div, class: 'text-center py-12' do
       concat content_tag(:div, icon('inbox', class: 'w-12 h-12 mx-auto text-gray-400'))
-      concat content_tag(:h3, 'No records found', class: 'mt-2 text-sm font-medium text-gray-900')
+      concat content_tag('h3', 'No records found', class: 'mt-2 text-sm font-medium text-gray-900')
       concat content_tag(:p, 'Get started by creating a new record.', class: 'mt-1 text-sm text-gray-500')
       concat link_to('Add Record', [:new, resource_class.model.name.underscore.to_sym],
                      class: button_classes(variant: :primary, size: :small),

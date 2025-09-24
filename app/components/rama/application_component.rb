@@ -30,18 +30,21 @@ class Rama::ApplicationComponent < ViewComponent::Base
       end
     when 'edit'
       content_tag :svg, options.merge(fill: 'none', stroke: 'currentColor', viewBox: '0 0 24 24') do
+        edit_path = 'M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z'
         content_tag :path, '', 'stroke-linecap': 'round', 'stroke-linejoin': 'round', 'stroke-width': '2',
-                               d: 'M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z'
+                               d: edit_path
       end
     when 'trash'
       content_tag :svg, options.merge(fill: 'none', stroke: 'currentColor', viewBox: '0 0 24 24') do
+        trash_path = 'M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16'
         content_tag :path, '', 'stroke-linecap': 'round', 'stroke-linejoin': 'round', 'stroke-width': '2',
-                               d: 'M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16'
+                               d: trash_path
       end
     when 'filter'
       content_tag :svg, options.merge(fill: 'none', stroke: 'currentColor', viewBox: '0 0 24 24') do
+        filter_path = 'M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.207A1 1 0 013 6.5V4z'
         content_tag :path, '', 'stroke-linecap': 'round', 'stroke-linejoin': 'round', 'stroke-width': '2',
-                               d: 'M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.207A1 1 0 013 6.5V4z'
+                               d: filter_path
       end
     else
       content_tag :span, name, options
@@ -49,7 +52,8 @@ class Rama::ApplicationComponent < ViewComponent::Base
   end
 
   def button_classes(variant: :primary, size: :medium, **options)
-    base_classes = 'inline-flex items-center justify-center font-medium rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2'
+    base_classes = 'inline-flex items-center justify-center font-medium rounded-md ' \
+                   'transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2'
 
     variant_classes = case variant
                       when :primary
@@ -64,14 +68,11 @@ class Rama::ApplicationComponent < ViewComponent::Base
                         'bg-gray-100 text-gray-700 hover:bg-gray-200 focus:ring-gray-500'
                       end
 
-    size_classes = case size
-                   when :small
-                     'px-3 py-1.5 text-sm'
-                   when :medium
-                     'px-4 py-2 text-sm'
-                   when :large
-                     'px-6 py-3 text-base'
-                   end
+    size_classes = {
+      small: 'px-3 py-1.5 text-sm',
+      medium: 'px-4 py-2 text-sm',
+      large: 'px-6 py-3 text-base',
+    }[size]
 
     class_names(base_classes, variant_classes, size_classes, options[:class])
   end
@@ -82,7 +83,8 @@ class Rama::ApplicationComponent < ViewComponent::Base
   end
 
   def input_classes(**options)
-    base_classes = 'block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm'
+    base_classes = 'block w-full rounded-md border-gray-300 shadow-sm ' \
+                   'focus:border-blue-500 focus:ring-blue-500 sm:text-sm'
     class_names(base_classes, options[:class])
   end
 

@@ -28,15 +28,15 @@ module Rama
       @options = options
     end
 
-    def required(value = true)
+    def required(value: true)
       @options[:required] = value
     end
 
-    def searchable(value = true)
+    def searchable(value: true)
       @options[:searchable] = value
     end
 
-    def sortable(value = true)
+    def sortable(value: true)
       @options[:sortable] = value
     end
 
@@ -56,7 +56,7 @@ module Rama
       @options[:link_to] = block
     end
 
-    def options(collection)
+    def collection(collection)
       @options[:collection] = collection
     end
 
@@ -81,7 +81,7 @@ module Rama
       @options[:validation] = validation
     end
 
-    def readonly(value = true)
+    def readonly(value: true)
       @options[:readonly] = value
     end
 
@@ -151,7 +151,7 @@ module Rama
       @config[:suggestions_from] = field_names.flatten
     end
 
-    def highlight_matches(enabled = true)
+    def highlight_matches(enabled: true)
       @config[:highlight_matches] = enabled
     end
 
@@ -205,7 +205,7 @@ module Rama
       @options[:success_message] = message
     end
 
-    def confirm(message = true)
+    def confirm(message: true)
       @options[:confirm] = message
     end
 

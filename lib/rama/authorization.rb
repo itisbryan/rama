@@ -61,7 +61,7 @@ module Rama::Authorization
     when :pundit
       authorize_pundit_resource!(action, resource_class, resource)
     when :custom
-      authorize_custom_resource!(action, resource_class, resource)
+      custom_authorization_check(action, resource_class, resource)
     end
   end
 
@@ -81,7 +81,7 @@ module Rama::Authorization
     end
   end
 
-  def authorize_custom_resource!(_action, _resource_class, _resource)
+  def custom_authorization_check(_action, _resource_class, _resource)
     # Override this method in your application controller
     true
   end

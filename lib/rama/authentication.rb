@@ -61,7 +61,7 @@ module Rama::Authentication
                             when :devise
                               current_user
                             when :basic_auth
-                              OpenStruct.new(id: 1, name: 'Admin', email: 'admin@example.com')
+                              Struct.new(:id, :name, :email).new(1, 'Admin', 'admin@example.com')
                             end
   end
 

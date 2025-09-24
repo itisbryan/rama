@@ -199,8 +199,9 @@ class Rama::SearchEngine
     columns = []
 
     # Add string and text columns
+    searchable_types = [:string, :text].freeze
     model_class.columns.each do |column|
-      columns << "#{model_class.table_name}.#{column.name}" if [:string, :text].include?(column.type)
+      columns << "#{model_class.table_name}.#{column.name}" if searchable_types.include?(column.type)
     end
 
     # Add searchable association columns

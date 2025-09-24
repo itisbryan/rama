@@ -101,47 +101,47 @@ module Rama
       end
 
       # === HELPER METHODS ===
-      def get_title
+      def resource_title
         resource_config[:title] || model&.name&.pluralize&.humanize || 'Resources'
       end
 
-      def get_description
+      def resource_description
         resource_config[:description]
       end
 
-      def get_icon
+      def resource_icon
         resource_config[:icon] || 'table'
       end
 
-      def get_fields
+      def resource_fields
         resource_config[:fields] || {}
       end
 
-      def get_filters
+      def resource_filters
         resource_config[:filters] || {}
       end
 
-      def get_search_config
+      def resource_search_config
         resource_config[:search] || {}
       end
 
-      def get_actions
+      def resource_actions
         resource_config[:actions] || { bulk: {}, row: {} }
       end
 
-      def get_forms
+      def resource_forms
         resource_config[:forms] || { create: {}, edit: {} }
       end
 
-      def get_performance_config
+      def resource_performance_config
         resource_config[:performance] || {}
       end
 
-      def get_permissions
+      def resource_permissions
         resource_config[:permissions] || {}
       end
 
-      def get_customization
+      def resource_customization
         resource_config[:customization] || {}
       end
 
@@ -150,7 +150,7 @@ module Rama
         scope = model.all
 
         # Apply filters
-        get_filters.each do |field_name, filter_config|
+        resource_filters.each do |field_name, filter_config|
           value = params[field_name.to_sym] || params[field_name]
           next if value.blank?
 
@@ -159,20 +159,20 @@ module Rama
 
         # Apply search
         if params[:search].present?
-          search_config = get_search_config
-          if search_config[:fields].present?
+          search_config_data = resource_search_config
+          if search_config_data[:fields].present?
             search_engine = Rama::SearchEngine.new(
               model,
               params[:search],
-              strategy: search_config[:strategy] || :auto,
+              strategy: search_config_data[:strategy] || :auto,
             )
             scope = search_engine.search
           end
         end
 
         # Apply performance optimizations
-        performance_config = get_performance_config
-        scope = scope.includes(*performance_config[:includes]) if performance_config[:includes].present?
+        performance_config_data = resource_performance_config
+        scope = scope.includes(*performance_config_data[:includes]) if performance_config_data[:includes].present?
 
         scope
       end
@@ -208,7 +208,7 @@ module Rama
 
       # === FIELD FORMATTING ===
       def format_field_value(record, field_name)
-        field_config = get_fields[field_name.to_s]
+        field_config = resource_fields[field_name.to_s]
         return record.public_send(field_name) unless field_config
 
         case field_config[:type]
@@ -241,11 +241,11 @@ module Rama
 
       # === AUTHORIZATION ===
       def can?(action, resource, current_user)
-        permissions = get_permissions[action.to_s]
-        return true unless permissions # Default allow if no permissions defined
+        permissions_config = resource_permissions[action.to_s]
+        return true unless permissions_config # Default allow if no permissions defined
 
-        roles = permissions[:roles]
-        condition = permissions[:condition]
+        roles = permissions_config[:roles]
+        condition = permissions_config[:condition]
 
         # Check role-based permissions
         if roles.include?(:all) || roles.include?(current_user&.role&.to_sym)

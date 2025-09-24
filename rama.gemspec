@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.email       = ['team@rama.dev']
   spec.homepage    = 'https://github.com/rama/rama'
   spec.summary     = 'Modern Rails 8 admin panel with visual builder'
-  spec.description = 'A modern Rails 8 admin panel with visual builder, smart search, and high-performance features using the Solid suite'
+  spec.description = 'A modern Rails 8 admin panel with visual builder, smart search, and high-performance features'
   spec.license     = 'MIT'
 
   spec.metadata['homepage_uri'] = spec.homepage
