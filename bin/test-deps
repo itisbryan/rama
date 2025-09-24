@@ -1,0 +1,42 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# Simple script to test dependency resolution
+puts "Testing dependency resolution..."
+
+begin
+  require 'bundler/setup'
+  puts "✅ Bundler setup successful"
+rescue Bundler::GemNotFound => e
+  puts "❌ Missing gem: #{e.message}"
+  exit 1
+rescue => e
+  puts "❌ Error: #{e.message}"
+  exit 1
+end
+
+# Test SimpleCov loading
+begin
+  require 'simplecov'
+  puts "✅ SimpleCov loaded successfully (version: #{SimpleCov::VERSION})"
+rescue LoadError => e
+  puts "❌ SimpleCov not available: #{e.message}"
+end
+
+# Test SimpleCov-LCOV loading
+begin
+  require 'simplecov-lcov'
+  puts "✅ SimpleCov-LCOV loaded successfully"
+rescue LoadError => e
+  puts "❌ SimpleCov-LCOV not available: #{e.message}"
+end
+
+# Test RuboCop loading
+begin
+  require 'rubocop'
+  puts "✅ RuboCop loaded successfully (version: #{RuboCop::Version::STRING})"
+rescue LoadError => e
+  puts "❌ RuboCop not available: #{e.message}"
+end
+
+puts "\n🎉 All dependencies resolved successfully!"

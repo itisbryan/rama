@@ -179,17 +179,39 @@ No service required - uses file-based database.
 # In spec_helper.rb
 if ENV['COVERAGE']
   require 'simplecov'
+  require 'simplecov-lcov'
+
+  SimpleCov::Formatter::LcovFormatter.config do |c|
+    c.report_with_single_file = true
+    c.single_report_path = 'coverage/lcov/rama.lcov'
+  end
+
+  SimpleCov.formatters = [
+    SimpleCov::Formatter::HTMLFormatter,
+    SimpleCov::Formatter::LcovFormatter
+  ]
+
   SimpleCov.start 'rails' do
     add_filter '/spec/'
     add_filter '/examples/'
+    add_filter '/vendor/'
+    add_filter '/bin/'
+
+    add_group 'Controllers', 'app/controllers'
+    add_group 'Models', 'app/models'
+    add_group 'Components', 'app/components'
+    add_group 'Jobs', 'app/jobs'
+    add_group 'Libraries', 'lib'
   end
 end
 ```
 
 ### Codecov Integration
-- Uploads coverage reports from main test job
+- Uses GitHub Action for coverage upload (codecov/codecov-action@v4)
+- Generates LCOV format for better compatibility
 - Provides coverage badges and PR comments
 - Tracks coverage trends over time
+- No gem dependency conflicts
 
 ## Performance Testing
 

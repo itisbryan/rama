@@ -27,6 +27,6 @@ end
 
 group :test do
   # Coverage reporting
-  gem 'codecov', '~> 0.6', require: false
+  gem 'simplecov', '~> 0.21.2', require: false
   gem 'simplecov-lcov', '~> 0.8', require: false
 end

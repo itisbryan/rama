@@ -1,5 +1,34 @@
 # frozen_string_literal: true
 
+# Coverage reporting
+if ENV['COVERAGE']
+  require 'simplecov'
+  require 'simplecov-lcov'
+
+  SimpleCov::Formatter::LcovFormatter.config do |c|
+    c.report_with_single_file = true
+    c.single_report_path = 'coverage/lcov/rama.lcov'
+  end
+
+  SimpleCov.formatters = [
+    SimpleCov::Formatter::HTMLFormatter,
+    SimpleCov::Formatter::LcovFormatter
+  ]
+
+  SimpleCov.start 'rails' do
+    add_filter '/spec/'
+    add_filter '/examples/'
+    add_filter '/vendor/'
+    add_filter '/bin/'
+
+    add_group 'Controllers', 'app/controllers'
+    add_group 'Models', 'app/models'
+    add_group 'Components', 'app/components'
+    add_group 'Jobs', 'app/jobs'
+    add_group 'Libraries', 'lib'
+  end
+end
+
 require 'bundler/setup'
 require 'rails'
 require 'rspec/rails'

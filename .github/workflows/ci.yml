@@ -140,12 +140,15 @@ jobs:
           RAILS_ENV: test
         if: matrix.ruby-version == '3.2' && matrix.rails-version == '8.0' && matrix.database == 'postgresql'
 
-      - name: Upload coverage reports
-        uses: codecov/codecov-action@v3
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4
         with:
-          file: ./coverage/coverage.xml
+          files: ./coverage/lcov/rama.lcov
           flags: unittests
           name: codecov-umbrella
+          fail_ci_if_error: false
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         if: matrix.ruby-version == '3.2' && matrix.rails-version == '8.0' && matrix.database == 'postgresql'
 
   security:
