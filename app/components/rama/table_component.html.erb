@@ -1,0 +1,63 @@
+<turbo-frame id="resources_table" class="min-w-full">
+  <% if resources.any? %>
+    <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+      <table class="min-w-full divide-y divide-gray-300">
+        <thead class="bg-gray-50">
+          <tr>
+            <% columns.each do |name, config| %>
+              <th scope="col" class="px-6 py-3">
+                <%= column_header(name, config) %>
+              </th>
+            <% end %>
+            <% if actions %>
+              <th scope="col" class="px-6 py-3">
+                <span class="text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</span>
+              </th>
+            <% end %>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200" id="resources_list">
+          <% resources.each do |resource| %>
+            <tr id="resource_<%= resource.id %>" class="hover:bg-gray-50">
+              <% columns.each do |name, config| %>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <%= cell_value(resource, name, config) %>
+                </td>
+              <% end %>
+              <% if actions %>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                  <%= row_actions(resource) %>
+                </td>
+              <% end %>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    
+    <!-- Pagination -->
+    <div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
+      <div class="flex-1 flex justify-between sm:hidden">
+        <!-- Mobile pagination -->
+      </div>
+      <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+        <div>
+          <p class="text-sm text-gray-700">
+            Showing
+            <span class="font-medium"><%= resources.offset_value + 1 %></span>
+            to
+            <span class="font-medium"><%= resources.offset_value + resources.length %></span>
+            of
+            <span class="font-medium"><%= resources.total_count %></span>
+            results
+          </p>
+        </div>
+        <div>
+          <!-- Pagination controls would go here -->
+        </div>
+      </div>
+    </div>
+  <% else %>
+    <%= empty_state %>
+  <% end %>
+</turbo-frame>

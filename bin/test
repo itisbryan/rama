@@ -1,0 +1,71 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'bundler/setup'
+require 'optparse'
+
+options = {}
+OptionParser.new do |opts|
+  opts.banner = "Usage: bin/test [options]"
+
+  opts.on("-u", "--unit", "Run unit tests only") do
+    options[:unit] = true
+  end
+
+  opts.on("-i", "--integration", "Run integration tests only") do
+    options[:integration] = true
+  end
+
+  opts.on("-p", "--performance", "Run performance tests only") do
+    options[:performance] = true
+  end
+
+  opts.on("-c", "--coverage", "Run with coverage") do
+    options[:coverage] = true
+  end
+
+  opts.on("-f", "--fast", "Run fast tests only (exclude performance)") do
+    options[:fast] = true
+  end
+
+  opts.on("-v", "--verbose", "Verbose output") do
+    options[:verbose] = true
+  end
+
+  opts.on("-h", "--help", "Show this help") do
+    puts opts
+    exit
+  end
+end.parse!
+
+# Set environment variables
+ENV['RAILS_ENV'] = 'test'
+ENV['COVERAGE'] = 'true' if options[:coverage]
+
+# Setup test database if needed
+unless File.exist?('spec/dummy/db/test.sqlite3')
+  puts "Setting up test database..."
+  system('cd spec/dummy && rails db:create db:migrate RAILS_ENV=test')
+end
+
+# Determine which tests to run
+if options[:unit]
+  puts "Running unit tests..."
+  exec('bundle exec rspec spec/lib/ spec/models/ spec/components/')
+elsif options[:integration]
+  puts "Running integration tests..."
+  exec('bundle exec rspec spec/features/ spec/requests/')
+elsif options[:performance]
+  puts "Running performance tests..."
+  exec('bundle exec rspec spec/performance/')
+elsif options[:fast]
+  puts "Running fast tests (excluding performance)..."
+  exec('bundle exec rspec --exclude-pattern "spec/performance/**/*_spec.rb"')
+else
+  puts "Running all tests..."
+  if options[:verbose]
+    exec('bundle exec rspec --format documentation')
+  else
+    exec('bundle exec rspec')
+  end
+end

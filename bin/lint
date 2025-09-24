@@ -1,0 +1,111 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'bundler/setup'
+require 'optparse'
+
+options = {}
+OptionParser.new do |opts|
+  opts.banner = "Usage: bin/lint [options]"
+
+  opts.on("-a", "--auto-correct", "Auto-correct offenses") do
+    options[:auto_correct] = true
+  end
+
+  opts.on("-A", "--auto-correct-all", "Auto-correct all offenses including unsafe") do
+    options[:auto_correct_all] = true
+  end
+
+  opts.on("-f", "--format FORMAT", "Output format") do |format|
+    options[:format] = format
+  end
+
+  opts.on("--parallel", "Run in parallel") do
+    options[:parallel] = true
+  end
+
+  opts.on("--only COP", "Run only specified cop") do |cop|
+    options[:only] = cop
+  end
+
+  opts.on("--except COP", "Exclude specified cop") do |cop|
+    options[:except] = cop
+  end
+
+  opts.on("-v", "--verbose", "Verbose output") do
+    options[:verbose] = true
+  end
+
+  opts.on("--security", "Run security checks") do
+    options[:security] = true
+  end
+
+  opts.on("--all", "Run all quality checks") do
+    options[:all] = true
+  end
+
+  opts.on("-h", "--help", "Show this help") do
+    puts opts
+    exit
+  end
+end.parse!
+
+def run_command(command, description)
+  puts "Running #{description}..." if options[:verbose]
+  success = system(command)
+  puts success ? "✅ #{description} passed" : "❌ #{description} failed"
+  success
+end
+
+def run_rubocop
+  args = []
+  args << '--auto-correct' if options[:auto_correct]
+  args << '--auto-correct-all' if options[:auto_correct_all]
+  args << "--format #{options[:format]}" if options[:format]
+  args << '--parallel' if options[:parallel]
+  args << "--only #{options[:only]}" if options[:only]
+  args << "--except #{options[:except]}" if options[:except]
+  
+  command = "bundle exec rubocop #{args.join(' ')}"
+  run_command(command, "RuboCop")
+end
+
+def run_security_checks
+  success = true
+  
+  puts "Running security checks..."
+  
+  # Brakeman
+  success &= run_command('bundle exec brakeman --no-pager', 'Brakeman security scan')
+  
+  # Bundle audit
+  success &= run_command('bundle exec bundle-audit update', 'Bundle audit update')
+  success &= run_command('bundle exec bundle-audit', 'Bundle audit check')
+  
+  success
+end
+
+def run_all_checks
+  success = true
+  
+  puts "Running all quality checks..."
+  
+  success &= run_rubocop
+  success &= run_security_checks
+  
+  if success
+    puts "\n🎉 All quality checks passed!"
+  else
+    puts "\n💥 Some quality checks failed!"
+    exit(1)
+  end
+end
+
+# Main execution
+if options[:all]
+  run_all_checks
+elsif options[:security]
+  exit(1) unless run_security_checks
+else
+  exit(1) unless run_rubocop
+end

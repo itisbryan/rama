@@ -1,0 +1,234 @@
+# RuboCop configuration for Rama
+
+require:
+  - rubocop-rails
+  - rubocop-rspec
+  - rubocop-performance
+
+AllCops:
+  TargetRubyVersion: 3.1
+  TargetRailsVersion: 7.1
+  NewCops: enable
+  Exclude:
+    - 'bin/**/*'
+    - 'db/**/*'
+    - 'config/**/*'
+    - 'spec/dummy/**/*'
+    - 'demo_app/**/*'
+    - 'vendor/**/*'
+    - 'node_modules/**/*'
+    - 'tmp/**/*'
+    - 'log/**/*'
+    - 'coverage/**/*'
+
+# Layout and Formatting
+Layout/LineLength:
+  Max: 120
+  Exclude:
+    - 'spec/**/*'
+    - 'examples/**/*'
+
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+
+Layout/FirstArrayElementIndentation:
+  EnforcedStyle: consistent
+
+Layout/FirstHashElementIndentation:
+  EnforcedStyle: consistent
+
+# Style
+Style/Documentation:
+  Enabled: false
+
+Style/StringLiterals:
+  EnforcedStyle: single_quotes
+
+Style/StringLiteralsInInterpolation:
+  EnforcedStyle: single_quotes
+
+Style/FrozenStringLiteralComment:
+  Enabled: true
+  EnforcedStyle: always
+
+Style/ClassAndModuleChildren:
+  EnforcedStyle: compact
+
+Style/HashSyntax:
+  EnforcedStyle: ruby19
+
+Style/TrailingCommaInArrayLiteral:
+  EnforcedStyleForMultiline: consistent_comma
+
+Style/TrailingCommaInHashLiteral:
+  EnforcedStyleForMultiline: consistent_comma
+
+Style/TrailingCommaInArguments:
+  EnforcedStyleForMultiline: consistent_comma
+
+Style/Lambda:
+  EnforcedStyle: literal
+
+Style/BlockDelimiters:
+  EnforcedStyle: semantic
+  AllowBracesOnProceduralOneLiners: true
+
+Style/SymbolArray:
+  EnforcedStyle: brackets
+
+Style/WordArray:
+  EnforcedStyle: brackets
+
+# Metrics
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
+    - 'examples/**/*'
+    - 'lib/rama/dsl_configs.rb'
+    - 'Rakefile'
+
+Metrics/ModuleLength:
+  Max: 150
+  Exclude:
+    - 'spec/**/*'
+    - 'lib/rama/dsl_configs.rb'
+
+Metrics/ClassLength:
+  Max: 150
+  Exclude:
+    - 'spec/**/*'
+    - 'lib/rama/improved_resource.rb'
+
+Metrics/MethodLength:
+  Max: 20
+  Exclude:
+    - 'spec/**/*'
+    - 'examples/**/*'
+
+Metrics/AbcSize:
+  Max: 20
+  Exclude:
+    - 'spec/**/*'
+
+Metrics/CyclomaticComplexity:
+  Max: 8
+
+Metrics/PerceivedComplexity:
+  Max: 8
+
+# Naming
+Naming/PredicateName:
+  ForbiddenPrefixes:
+    - is_
+
+Naming/VariableNumber:
+  EnforcedStyle: snake_case
+
+# Rails specific
+Rails/FilePath:
+  EnforcedStyle: arguments
+
+Rails/HttpStatus:
+  EnforcedStyle: symbolic
+
+Rails/InverseOf:
+  Enabled: false
+
+Rails/SkipsModelValidations:
+  Exclude:
+    - 'spec/**/*'
+
+Rails/ApplicationRecord:
+  Enabled: false
+
+Rails/DynamicFindBy:
+  Whitelist:
+    - find_by_sql
+
+# RSpec specific
+RSpec/ExampleLength:
+  Max: 20
+
+RSpec/MultipleExpectations:
+  Max: 5
+
+RSpec/NestedGroups:
+  Max: 4
+
+RSpec/DescribeClass:
+  Exclude:
+    - 'spec/features/**/*'
+    - 'spec/performance/**/*'
+
+RSpec/FilePath:
+  Enabled: false
+
+RSpec/SpecFilePathFormat:
+  Enabled: false
+
+RSpec/MultipleMemoizedHelpers:
+  Max: 10
+
+RSpec/ContextWording:
+  Prefixes:
+    - when
+    - with
+    - without
+    - if
+    - unless
+    - for
+
+# Performance
+Performance/StringReplacement:
+  Enabled: true
+
+Performance/RedundantBlockCall:
+  Enabled: true
+
+Performance/RedundantMatch:
+  Enabled: true
+
+# Bundler
+Bundler/OrderedGems:
+  Enabled: false
+
+# Lint
+Lint/AmbiguousBlockAssociation:
+  Exclude:
+    - 'spec/**/*'
+
+Lint/SuppressedException:
+  AllowComments: true
+
+# Security
+Security/YAMLLoad:
+  Enabled: true
+
+Security/Eval:
+  Enabled: true
+
+# Custom cops for Rama
+Style/HashEachMethods:
+  Enabled: true
+
+Style/HashTransformKeys:
+  Enabled: true
+
+Style/HashTransformValues:
+  Enabled: true
+
+# Disable some cops that conflict with our DSL design
+Style/MethodCallWithArgsParentheses:
+  Enabled: false
+
+Style/BlockComments:
+  Enabled: false
+
+# Allow longer lines in examples and documentation
+Layout/LineLength:
+  Exclude:
+    - 'examples/**/*'
+    - '*.md'
+    - 'RESOURCE_DSL_ANALYSIS.md'
+    - 'DSL_MIGRATION_GUIDE.md'
+    - 'TESTING.md'

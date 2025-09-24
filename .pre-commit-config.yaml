@@ -1,0 +1,40 @@
+# Pre-commit hooks for FlexAdmin
+# Install with: pip install pre-commit && pre-commit install
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+      - id: check-merge-conflict
+      - id: check-json
+      - id: pretty-format-json
+        args: ['--autofix']
+
+  - repo: local
+    hooks:
+      - id: rubocop
+        name: RuboCop
+        entry: bundle exec rubocop
+        language: system
+        types: [ruby]
+        require_serial: false
+
+      - id: rspec
+        name: RSpec
+        entry: bundle exec rspec --fail-fast
+        language: system
+        types: [ruby]
+        pass_filenames: false
+        stages: [push]
+
+      - id: brakeman
+        name: Brakeman Security Scan
+        entry: bundle exec brakeman --no-pager --quiet
+        language: system
+        types: [ruby]
+        pass_filenames: false
+        stages: [push]
