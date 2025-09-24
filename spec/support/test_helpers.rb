@@ -4,18 +4,18 @@ module Rama::TestHelpers
   # Authentication helpers
   def sign_in_admin_user(user = nil)
     @current_admin_user = user || create(:admin_user)
-    allow_any_instance_of(Rama::ApplicationController)
+    allow_any_instance_of(Rama::ApplicationController) # rubocop:disable RSpec/AnyInstance
       .to receive(:current_admin_user).and_return(@current_admin_user)
-    allow_any_instance_of(Rama::ApplicationController)
+    allow_any_instance_of(Rama::ApplicationController) # rubocop:disable RSpec/AnyInstance
       .to receive(:admin_user_signed_in?).and_return(true)
     @current_admin_user
   end
 
   def sign_out_admin_user
     @current_admin_user = nil
-    allow_any_instance_of(Rama::ApplicationController)
+    allow_any_instance_of(Rama::ApplicationController) # rubocop:disable RSpec/AnyInstance
       .to receive(:current_admin_user).and_return(nil)
-    allow_any_instance_of(Rama::ApplicationController)
+    allow_any_instance_of(Rama::ApplicationController) # rubocop:disable RSpec/AnyInstance
       .to receive(:admin_user_signed_in?).and_return(false)
   end
 

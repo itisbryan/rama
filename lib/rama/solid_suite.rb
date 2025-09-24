@@ -3,7 +3,7 @@
 module Rama::SolidSuite
   extend ActiveSupport::Concern
 
-  class_methods do
+  class_methods do # rubocop:disable Metrics/BlockLength
     def configure_solid_suite!
       configure_solid_queue! if Rama.config.solid_queue_enabled
       configure_solid_cache! if Rama.config.solid_cache_enabled

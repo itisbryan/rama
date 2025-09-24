@@ -102,7 +102,7 @@ class Rama::Resource
 
     # === INSTANCE METHOD ACCESSORS ===
     def resource_title
-      resource_config[:title] || model&.name&.pluralize&.humanize || 'Resources'
+      resource_config[:title] || default_resource_title
     end
 
     def resource_description
@@ -181,9 +181,7 @@ class Rama::Resource
       case filter_config[:type]
       when :string
         scope.where("#{field_name} ILIKE ?", "%#{value}%")
-      when :exact
-        scope.where(field_name => value)
-      when :select
+      when :exact, :select, nil
         scope.where(field_name => value)
       when :boolean
         scope.where(field_name => value == 'true')
@@ -204,6 +202,8 @@ class Rama::Resource
         end
         scope
       else
+        # Unknown filter type, log warning and default to exact match
+        Rails.logger.warn("Unknown filter type: #{filter_config[:type]}")
         scope.where(field_name => value)
       end
     end
@@ -305,6 +305,17 @@ class Rama::Resource
         }
       end
       associations
+    end
+
+    private
+
+    def default_resource_title
+      return 'Resources' unless model
+
+      model_name = model.name
+      return 'Resources' unless model_name
+
+      model_name.pluralize.humanize
     end
   end
 end

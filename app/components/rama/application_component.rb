@@ -30,19 +30,19 @@ class Rama::ApplicationComponent < ViewComponent::Base
       end
     when 'edit'
       content_tag :svg, options.merge(fill: 'none', stroke: 'currentColor', viewBox: '0 0 24 24') do
-        edit_path = 'M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z'
+        edit_path = 'M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z' # rubocop:disable Layout/LineLength
         content_tag :path, '', 'stroke-linecap': 'round', 'stroke-linejoin': 'round', 'stroke-width': '2',
                                d: edit_path
       end
     when 'trash'
       content_tag :svg, options.merge(fill: 'none', stroke: 'currentColor', viewBox: '0 0 24 24') do
-        trash_path = 'M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16'
+        trash_path = 'M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16' # rubocop:disable Layout/LineLength
         content_tag :path, '', 'stroke-linecap': 'round', 'stroke-linejoin': 'round', 'stroke-width': '2',
                                d: trash_path
       end
     when 'filter'
       content_tag :svg, options.merge(fill: 'none', stroke: 'currentColor', viewBox: '0 0 24 24') do
-        filter_path = 'M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.207A1 1 0 013 6.5V4z'
+        filter_path = 'M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.207A1 1 0 013 6.5V4z' # rubocop:disable Layout/LineLength
         content_tag :path, '', 'stroke-linecap': 'round', 'stroke-linejoin': 'round', 'stroke-width': '2',
                                d: filter_path
       end

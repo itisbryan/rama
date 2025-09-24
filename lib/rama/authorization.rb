@@ -81,7 +81,7 @@ module Rama::Authorization
     end
   end
 
-  def custom_authorization_check(_action, _resource_class, _resource)
+  def custom_authorization_check?(_action, _resource_class, _resource)
     # Override this method in your application controller
     true
   end

@@ -61,13 +61,15 @@ class Rama::FormConfiguration < ApplicationRecord
     old_position = field.position
 
     if new_position < old_position
-      # Moving up
-      field_configurations.where(position: new_position...old_position)
-        .update_all('position = position + 1')
+      # Moving up - update positions individually to maintain validations
+      field_configurations.where(position: new_position...old_position).find_each do |f|
+        f.update!(position: f.position + 1)
+      end
     else
-      # Moving down
-      field_configurations.where(position: (old_position + 1)..new_position)
-        .update_all('position = position - 1')
+      # Moving down - update positions individually to maintain validations
+      field_configurations.where(position: (old_position + 1)..new_position).find_each do |f|
+        f.update!(position: f.position - 1)
+      end
     end
 
     field.update!(position: new_position)
@@ -126,7 +128,7 @@ class Rama::FormConfiguration < ApplicationRecord
 
   def reorder_fields
     ordered_fields.each_with_index do |field, index|
-      field.update_column(:position, index)
+      field.update!(position: index)
     end
   end
 

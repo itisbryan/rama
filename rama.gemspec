@@ -52,23 +52,7 @@ Gem::Specification.new do |spec|
   # File uploads
   spec.add_dependency 'image_processing', '>= 1.2'
 
-  # Development dependencies
-  spec.add_development_dependency 'capybara', '>= 3.0'
-  spec.add_development_dependency 'database_cleaner-active_record', '>= 2.1'
-  spec.add_development_dependency 'factory_bot_rails', '>= 6.0'
-  spec.add_development_dependency 'rspec-rails', '>= 6.0'
-  spec.add_development_dependency 'selenium-webdriver', '>= 4.0'
-  spec.add_development_dependency 'simplecov', '~> 0.21.2'
-
-  # Linting and code quality
-  spec.add_development_dependency 'rubocop', '>= 1.57'
-  spec.add_development_dependency 'rubocop-performance', '>= 1.19'
-  spec.add_development_dependency 'rubocop-rails', '>= 2.22'
-  spec.add_development_dependency 'rubocop-rspec', '>= 2.25'
-
-  # Security scanning
-  spec.add_development_dependency 'brakeman', '>= 6.0'
-  spec.add_development_dependency 'bundler-audit', '>= 0.9'
+  # NOTE: Development dependencies are specified in Gemfile per RuboCop guidelines
 
   spec.required_ruby_version = '>= 3.1.0'
 end

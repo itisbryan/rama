@@ -86,7 +86,8 @@ module Rama::FieldTypes
     def format_value(value)
       return nil if value.blank?
 
-      "<a href='mailto:#{value}'>#{value}</a>".html_safe
+      # Use Rails helpers for safe HTML generation
+      ActionController::Base.helpers.mail_to(value, value)
     end
   end
 
@@ -241,8 +242,11 @@ module Rama::FieldTypes
 
     private
 
-    def association_class
-      resource&.model&.reflect_on_association(association_name)&.klass
+    def association_class(resource_obj, assoc_name)
+      return nil unless resource_obj&.model
+
+      association = resource_obj.model.reflect_on_association(assoc_name)
+      association&.klass
     end
   end
 

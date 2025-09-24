@@ -4,6 +4,7 @@ class Rama::FilterComponent < ApplicationComponent
   attr_reader :filters, :current_filters
 
   def initialize(filters:, current_filters: {})
+    super()
     @filters = filters
     @current_filters = current_filters
   end
@@ -85,21 +86,21 @@ class Rama::FilterComponent < ApplicationComponent
                               current_value[:min],
                               placeholder: 'Min',
                               class: input_classes,
-                              data: {
-                                controller: 'live-filter',
-                                action: 'input->live-filter#filter',
-                                live_filter_debounce_value: 500,
-                              },)
+                              data: live_filter_data,)
       concat number_field_tag("filters[#{filter[:name]}][max]",
                               current_value[:max],
                               placeholder: 'Max',
                               class: input_classes,
-                              data: {
-                                controller: 'live-filter',
-                                action: 'input->live-filter#filter',
-                                live_filter_debounce_value: 500,
-                              },)
+                              data: live_filter_data,)
     end
+  end
+
+  def live_filter_data
+    {
+      controller: 'live-filter',
+      action: 'input->live-filter#filter',
+      live_filter_debounce_value: 500,
+    }
   end
 
   def select_options(filter)

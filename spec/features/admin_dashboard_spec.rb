@@ -263,7 +263,7 @@ RSpec.describe 'Admin Dashboard', :js, type: :feature do
 
     it 'handles server errors gracefully' do
       # Simulate a server error
-      allow_any_instance_of(User).to receive(:save!).and_raise(StandardError, 'Database error')
+      allow_any_instance_of(User).to receive(:save!).and_raise(StandardError, 'Database error') # rubocop:disable RSpec/AnyInstance
 
       visit '/admin/users'
 

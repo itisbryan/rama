@@ -4,6 +4,7 @@ class Rama::FormComponent < ApplicationComponent
   attr_reader :resource, :resource_class, :fields, :url, :method
 
   def initialize(resource:, resource_class:, fields: nil, url: nil, method: nil)
+    super()
     @resource = resource
     @resource_class = resource_class
     @fields = fields || resource_class.configured_fields
@@ -57,6 +58,8 @@ class Rama::FormComponent < ApplicationComponent
     when :rich_text_area
       form.rich_text_area name, class: input_classes, **field_html_options(config)
     else
+      # Default to text field for unknown types (different from :text_field case due to logging)
+      Rails.logger.warn("Unknown field input type: #{field_instance.form_input_type}")
       form.text_field name, class: input_classes, **field_html_options(config)
     end
   end
@@ -73,16 +76,14 @@ class Rama::FormComponent < ApplicationComponent
     if field_instance.respond_to?(:collection)
       collection = field_instance.collection
 
-      if collection.respond_to?(:map)
-        if collection.first.respond_to?(:id)
-          # ActiveRecord collection
-          collection.map { |item| [item.public_send(field_instance.display_attribute), item.id] }
-        else
-          # Array or hash collection
-          collection.is_a?(Hash) ? collection.invert : collection
-        end
+      return collection unless collection.respond_to?(:map)
+
+      if collection.first.respond_to?(:id)
+        # ActiveRecord collection
+        collection.map { |item| [item.public_send(field_instance.display_attribute), item.id] }
       else
-        collection
+        # Array or hash collection
+        format_simple_collection(collection)
       end
     else
       config[:options][:collection] || []
@@ -101,10 +102,16 @@ class Rama::FormComponent < ApplicationComponent
     return unless resource.errors[name].any?
 
     content_tag :div, class: 'mt-1' do
-      resource.errors[name].map { |error|
-        content_tag :p, error, class: 'text-sm text-red-600'
-      }.join.html_safe
+      safe_join(
+        resource.errors[name].map { |error|
+          content_tag :p, error, class: 'text-sm text-red-600'
+        },
+      )
     end
+  end
+
+  def format_simple_collection(collection)
+    collection.is_a?(Hash) ? collection.invert : collection
   end
 
   def form_actions

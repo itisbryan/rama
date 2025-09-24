@@ -46,7 +46,7 @@ RSpec.describe Rama::SearchEngine do
       it 'selects appropriate strategy for longer queries' do
         search_engine = described_class.new(model_class, 'John Doe', strategy: :auto)
         # Strategy depends on database capabilities
-        expect([:basic, :trigram, :full_text]).to include(search_engine.send(:strategy))
+        expect(search_engine.send(:strategy)).to be_in([:basic, :trigram, :full_text])
       end
     end
 

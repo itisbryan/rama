@@ -103,7 +103,7 @@ class Rama::ApplicationController < ActionController::Base
     Rails.logger.error exception.backtrace.join("\n")
 
     respond_to do |format|
-      format.html { redirect_to flex_admin.root_path, alert: 'An error occurred' }
+      format.html { redirect_to flex_admin.root_path, alert: I18n.t('rama.errors.generic') }
       format.turbo_stream { render turbo_stream: turbo_stream_flash(:error, 'An error occurred') }
       format.json { render json: { error: 'An error occurred' }, status: :internal_server_error }
     end
@@ -111,7 +111,7 @@ class Rama::ApplicationController < ActionController::Base
 
   def handle_not_found(_exception)
     respond_to do |format|
-      format.html { redirect_to flex_admin.root_path, alert: 'Record not found' }
+      format.html { redirect_to flex_admin.root_path, alert: I18n.t('rama.errors.not_found') }
       format.turbo_stream { render turbo_stream: turbo_stream_flash(:error, 'Record not found') }
       format.json { render json: { error: 'Record not found' }, status: :not_found }
     end
@@ -119,7 +119,7 @@ class Rama::ApplicationController < ActionController::Base
 
   def handle_access_denied(_exception)
     respond_to do |format|
-      format.html { redirect_to flex_admin.root_path, alert: 'Access denied' }
+      format.html { redirect_to flex_admin.root_path, alert: I18n.t('rama.errors.access_denied') }
       format.turbo_stream { render turbo_stream: turbo_stream_flash(:error, 'Access denied') }
       format.json { render json: { error: 'Access denied' }, status: :forbidden }
     end

@@ -1,0 +1,6 @@
+en:
+  rama:
+    errors:
+      generic: "An error occurred"
+      not_found: "Record not found"
+      access_denied: "Access denied"

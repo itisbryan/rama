@@ -18,10 +18,12 @@ class Rama::SearchEngine
       full_text_search
     when :trigram
       trigram_search
-    when :basic
-      basic_search
-    when :elasticsearch
-      elasticsearch_search
+    when :basic, :elasticsearch
+      if strategy == :elasticsearch
+        elasticsearch_search
+      else
+        basic_search
+      end
     else
       basic_search
     end
@@ -45,9 +47,9 @@ class Rama::SearchEngine
   def determine_strategy(requested_strategy)
     return requested_strategy unless requested_strategy == :auto
 
-    if query.length < 3
-      :basic
-    elsif full_text_available?
+    return :basic if query.length < 3
+
+    if full_text_available?
       :full_text
     elsif trigram_available?
       :trigram
@@ -214,6 +216,13 @@ class Rama::SearchEngine
     columns
   end
 
+  def extract_column_name(column_string)
+    return nil unless column_string
+
+    parts = column_string.split('.')
+    parts.last&.to_sym
+  end
+
   def suggestion_columns
     base_columns = [:id]
 
@@ -223,7 +232,7 @@ class Rama::SearchEngine
                     elsif model_class.column_names.include?('title')
                       :title
                     else
-                      searchable_columns.first&.split('.')&.last&.to_sym
+                      extract_column_name(searchable_columns.first)
                     end
 
     base_columns.compact

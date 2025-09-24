@@ -4,6 +4,7 @@ class Rama::TableComponent < ApplicationComponent
   attr_reader :resources, :resource_class, :columns, :actions
 
   def initialize(resources:, resource_class:, columns: nil, actions: true)
+    super()
     @resources = resources
     @resource_class = resource_class
     @columns = columns || default_columns
