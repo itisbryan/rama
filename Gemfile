@@ -19,6 +19,7 @@ group :development, :test do
   gem 'capybara', '>= 3.0'
   gem 'database_cleaner-active_record', '>= 2.1'
   gem 'factory_bot_rails', '>= 6.0'
+  gem 'generator_spec', '~> 0.9.5' # For testing generators
   gem 'rspec-rails', '>= 6.0'
   gem 'selenium-webdriver', '>= 4.0'
 

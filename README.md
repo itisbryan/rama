@@ -4,6 +4,31 @@ A modern admin panel for Rails 8 applications with visual builder, smart search,
 
 ## Features
 
+### 🚀 Quick Start with Scaffolding
+
+Generate complete admin interfaces for your existing models with a single command:
+
+```bash
+# Generate resources for all models
+rails g rama:resources:scaffolds
+
+# Or generate for specific models
+rails g rama:resources:scaffolds User Product Order
+
+# Options
+rails g rama:resources:scaffolds --skip=User,Admin  # Skip specific models
+rails g rama:resources:scaffolds --force            # Overwrite existing files
+```
+
+Features:
+- Automatic detection of fields, enums, and scopes
+- Smart filters for boolean fields and enums
+- Full-text search configuration
+- Batch actions and custom actions
+- Generated with best practices in mind
+
+[Learn more about resource scaffolding →](./docs/resource_scaffolding.md)
+
 ### 🏗️ Core Framework
 - **Rails 8 Native**: Built specifically for Rails 8 with Solid suite integration
 - **Hotwire Powered**: Real-time updates with Turbo and Stimulus

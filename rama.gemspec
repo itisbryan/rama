@@ -52,7 +52,7 @@ Gem::Specification.new do |spec|
   # File uploads
   spec.add_dependency 'image_processing', '>= 1.2'
 
-  # NOTE: Development dependencies are specified in Gemfile per RuboCop guidelines
+  # Development dependencies are specified in Gemfile per RuboCop guidelines
 
   spec.required_ruby_version = '>= 3.1.0'
 end

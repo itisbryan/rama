@@ -188,6 +188,25 @@ namespace :quality do
   task all: [:rubocop, :security]
 end
 
+# Generator tasks
+namespace :generate do
+  desc 'Generate Rama resources for all models (options: SKIP=model1,model2 ONLY=model1,model2 FORCE=true)'
+  task resources: :environment do
+    require 'rails/generators'
+
+    skip_models = ENV['SKIP'] ? ENV['SKIP'].split(',') : []
+    only_models = ENV['ONLY'] ? ENV['ONLY'].split(',') : []
+    force = ENV['FORCE'] == 'true'
+
+    args = []
+    args += ["--skip=#{skip_models.join(',')}"] if skip_models.any?
+    args += ["--only=#{only_models.join(',')}"] if only_models.any?
+    args << '--force' if force
+
+    Rails::Generators.invoke('rama:resources:scaffolds', args, destination_root: Rails.root)
+  end
+end
+
 # CI tasks
 namespace :ci do
   desc 'Run full CI suite'

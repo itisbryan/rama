@@ -1,0 +1,70 @@
+# frozen_string_literal: true
+
+class <%= @resource_name %> < Rama::Resource
+  title "<%= @model_name.titleize %>"
+  description "Manage <%= @model_name.titleize.pluralize %>"
+  model <%= @model_name %>
+  
+  <%- analysis = analyze_model -%>
+  
+  # Index view configuration
+  index_columns <%= (analysis[:attributes] - %i[created_at updated_at]).first(5).map(&:inspect).join(', ') %><%= analysis[:attributes].size > 5 ? ' # ...' : '' %>
+  
+  # Form configuration
+  form_attributes <%= (analysis[:attributes] - %i[id created_at updated_at]).map(&:inspect).join(', ') %>
+  
+  # Filters
+  <%- analysis[:booleans].each do |bool| -%>
+  filter :<%= bool %>, as: :boolean
+  <%- end -%>
+  
+  <%- analysis[:enums].each do |enum| -%>
+  filter :<%= enum %>, as: :select, collection: [<%= enum_options(enum) %>]
+  <%- end -%>
+  
+  <%- analysis[:scopes].each do |scope| -%>
+  filter :<%= scope %>, as: :boolean, label: "<%= scope.to_s.humanize %>"
+  <%- end -%>
+  
+  # Search configuration
+  search do
+    query do |query, term|
+      query.where("<%= analysis[:searchable].join(' ILIKE :term OR ') %> ILIKE :term", term: "%#{term}%")
+    end
+  end
+  
+  # Batch actions
+  batch_action :destroy, confirm: "Are you sure you want to delete these <%= @model_name.pluralize.downcase %>?"
+  
+  # Custom actions
+  <%- if analysis[:enums].any? -%>
+  <%- analysis[:enums].each do |enum| -%>
+  action :<%= "mark_as_#{enum}", as: :select, collection: [<%= enum_options(enum) %>], confirm: true do |ids, value|
+    <%= @model_name %>.where(id: ids).update_all(<%= enum %>: value)
+    redirect_back fallback_location: admin_<%= @model_name.underscore.pluralize %>_path, notice: "Updated successfully"
+  end
+  <%- end -%>
+  <%- end -%>
+  
+  # Customize form fields
+  # form do |f|
+  #   f.input :name
+  #   f.input :description, as: :text
+  # end
+  
+  # Customize index table
+  # index as: :table do
+  #   column :id
+  #   column :name
+  #   column :created_at
+  # end
+  
+  # Permissions
+  # can :manage, <%= @model_name %>, user_id: current_user.id
+  
+  # Scopes
+  # scope :active, -> { where(active: true) }
+  
+  # Decorator (if Draper is available)
+  # decorate_with <%= @model_name %>Decorator
+end
