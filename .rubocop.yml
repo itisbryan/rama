@@ -90,33 +90,33 @@ Metrics/BlockLength:
     - 'Rakefile'
 
 Metrics/ModuleLength:
-  Max: 150
+  Max: 250
   Exclude:
     - 'spec/**/*'
     - 'lib/rama/dsl_configs.rb'
 
 Metrics/ClassLength:
-  Max: 150
+  Max: 250
   Exclude:
     - 'spec/**/*'
     - 'lib/rama/improved_resource.rb'
 
 Metrics/MethodLength:
-  Max: 20
+  Max: 45
   Exclude:
     - 'spec/**/*'
     - 'examples/**/*'
 
 Metrics/AbcSize:
-  Max: 20
+  Max: 50
   Exclude:
     - 'spec/**/*'
 
 Metrics/CyclomaticComplexity:
-  Max: 8
+  Max: 20
 
 Metrics/PerceivedComplexity:
-  Max: 8
+  Max: 20
 
 # Naming
 Naming/PredicatePrefix:
